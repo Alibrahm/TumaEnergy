@@ -1,0 +1,41 @@
+.widgetwrapper {
+  display: flex;
+  gap: 1.5rem;
+  padding-left: 3rem;
+  padding-bottom: 0.25rem;
+  padding-bottom: calc(0.25rem + env(safe-area-inset-bottom));
+  border-radius: 8px;
+
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  /* shadow 1 */
+
+  box-shadow: 0px 0px 19px rgba(0, 0, 0, 0.04);
+  background: #48D1CC;
+  width: 268px;
+  height: 90px;
+  
+  justify-content: center;
+  .titlewrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+    justify-content: center;
+    
+    
+    .titletwo {
+      color: #ffffff;
+      letter-spacing: -0.025em;
+      // margin-top: 2rem;
+      margin-left: 0;
+      font-weight: 700;
+      font-size: 1.6rem;
+    }
+    .titleone {
+      font-size: 1.5rem;
+      color: #ffffff;
+      font-weight: 700;
+      margin-right: 0.75rem;
+    }
+  }
+}
