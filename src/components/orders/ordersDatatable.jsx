@@ -91,7 +91,7 @@ export default function Datatable() {
     const fetchOrders = async () => {
       try {
         const response = await axios.get(
-          `https://skiza-app-dy3qp.ondigitalocean.app/api/v1/skiza/subscribed/list?limit=${size}&page=${page}`,
+          `https://plankton-app-c2rii.ondigitalocean.app/api/skiza/list/tunes?size=${size}&page=${page}`,
           { headers }
         );
         const sortedRows = response.data.sort((a, b) => moment(b.createdAt) - moment(a.createdAt));
