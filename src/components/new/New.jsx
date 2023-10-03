@@ -9,12 +9,13 @@ import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Typography from "@mui/material/Typography";
-
+import React, { useEffect } from 'react';
 const New = ({ inputs, title }) => {
   // const [file, setFile] = useState("");
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [mp3url, setmp3url] = useState("");
   const [open, setOpen] = useState(false);
   const [modalText, setModalText] = useState("");
 
@@ -39,22 +40,30 @@ const New = ({ inputs, title }) => {
     borderRadius: 3,
   };
 
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setFormSubmitted(true);
     try {
       const response = await fetch(
-        "https://skiza-app-dy3qp.ondigitalocean.app/api/v1/skiza/add",
+        "https://plankton-app-c2rii.ondigitalocean.app/api/skiza/upload/tune",
         {
           method: "POST",
+          // headers: {
+          //   Authorization:
+          //     `Bearer ${token}`,
+          //   "Content-Type": "application/json",
+          // },
           headers: {
-            Authorization:
-              `Bearer ${token}`,
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
+            'Cookie': '__cf_bm=dRW9dYjzaYJMfDbx9TrLUB6yyzamH3CzM8kKxIxfMcM-1696276996-0-AZ7jNB/HW6e58WnAGoDT7iPO7i/KcR5pJH16tZDFPVU2HzxfczSwXdrjYhHvLFf1/0ho60N7lJ0qci6rehcd2KM='
           },
           body: JSON.stringify({
             code: code,
             name: name,
             description: description,
+            mp3_url:description
           }),
         }
       );
@@ -65,6 +74,59 @@ const New = ({ inputs, title }) => {
       console.log(error);
     }
   };
+
+  const handleButtonClick = (e) => {
+    e.preventDefault();
+    // Set isSubmitting to true when the button is clicked
+    setFormSubmitted(true);
+    setTimeout(() => {
+      setFormSubmitted(false);
+    }, 150);
+
+  };
+
+  useEffect(() => {
+    if (formSubmitted) {
+      let data = JSON.stringify({
+        "code": code,
+        "name": name,
+        "description": description,
+        "mp3_url": description
+      });
+
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'https://plankton-app-c2rii.ondigitalocean.app/api/skiza/upload/tune',
+        headers: {
+          'Content-Type': 'application/json',
+          'Cookie': '__cf_bm=9EDL1IS7R0Rj.kOo.E7W_bpAcAWDsa5l1Joj.9C9sQ4-1696197272-0-AYawdcv8XfiizSkdZLfI1ETW24FkFqjGqzsnecATHCqiXPG+/ydaOfjikoIxjUOZvQkYGf+CKXeHWJKH0DGgp+U='
+        },
+        data: data
+      };
+
+      axios.request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+
+          if (response.status == 201 || response.status == 200) {
+            console.log("Register response Form", response)
+            // const result = await response.text();
+            setOpen(true);
+            // setModalText(result.name);
+           
+            // navigate('/skizatunes');
+            // <Link to="/home" style={{ textDecoration: "none" }}/>
+
+          }
+          // window.location.href = "/skizatunes";
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [formSubmitted]);
+
 
   const handleClose = () => {
     setOpen(false);
@@ -80,6 +142,10 @@ const New = ({ inputs, title }) => {
 
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value);
+  };
+
+  const handleMp3url = (event) => {
+    setmp3url(event.target.value);
   };
 
   return (
@@ -131,8 +197,8 @@ const New = ({ inputs, title }) => {
                   <input
                     type="text"
                     placeholder="Mp3 Url"
-                    value={description}
-                    onChange={handleDescriptionChange}
+                    value={mp3url}
+                    onChange={handleMp3url}
                     required
                   />
                 </div>
@@ -149,7 +215,8 @@ const New = ({ inputs, title }) => {
                 cursor: 'pointer',
                 marginTop: 12,
                 borderRadius:'10px'
-              }}>Send</button></div>
+              }}
+                onClick={handleButtonClick}>Send</button></div>
             </div>
           </div>
         </div>

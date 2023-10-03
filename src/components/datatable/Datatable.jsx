@@ -131,6 +131,7 @@ const StyledTabsList = styled(TabsList)(
   align-items: center;
   justify-content: center;
   align-content: space-between;
+  margin-inline:190px;
   box-shadow: 0px 4px 30px ${theme.palette.mode === 'dark' ? grey[900] : grey[200]};
   `,
 );

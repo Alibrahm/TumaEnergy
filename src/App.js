@@ -5,6 +5,7 @@ import Login from "./pages/login/Login";
 import List from "./pages/list/List";
 import { DarkModeContext } from "./context/darkModeContext";
 import Signin from "./pages/login/Login";
+import Signup from "./pages/register/register";
 import { productInputs, userInputs } from "./formSource";
 import Orders from "./pages/order/Orders";
 import Otp from "./pages/otp/Otp";
@@ -19,7 +20,13 @@ function App() {
     <div className={darkMode ? "app dark" : "app"}>
       <BrowserRouter>
         <Routes>
-        <Route index element={<Signin />} />
+          <Route index element={<Signin />} />
+          <Route
+            path="register"
+            element={<Signup />}
+          />
+
+          <Route path="skizatunes" element={<Home />} />
           {token && (
             <Route path="skizatunes">
               <Route path="skizatunes" element={<Home />} />

@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import swal from 'sweetalert';
 import axios from 'axios';
+import { Link } from "react-router-dom";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,35 +41,36 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 async function loginUser(credentials) {
-  return axios.post('https://skiza-app-dy3qp.ondigitalocean.app/public/token', credentials)
+  return axios.post('https://plankton-app-c2rii.ondigitalocean.app/api/skiza/user/login', credentials)
     .then(response => response.data);
 }
 
 export default function Signin() {
   const classes = useStyles();
-  const [username, setUserName] = useState();
+  const [email, setemail] = useState();
   const [password, setPassword] = useState();
 
   const handleSubmit = async e => {
     e.preventDefault();
     const response = await loginUser({
-      username,
+      email,
       password
     });
     if ('token' in response) {
-      swal("Success", "You have Loggged In","success", {
+      swal("Success", "You have Loggged In", "success", {
         buttons: false,
         timer: 2000,
       })
-      .then((value) => {
-        localStorage.setItem('token', response['token']);
-        localStorage.setItem('user', JSON.stringify(response['user']));
-        window.location.href = "/skizatunes";
-      });
+        .then((value) => {
+          localStorage.setItem('token', response['token']);
+          // localStorage.setItem('user', JSON.stringify(response['user']));
+          window.location.href = "/skizatunes";
+        });
     } else {
       swal("Failed", response.error, "error");
     }
   }
+
 
   return (
     <Grid container className={classes.root}>
@@ -90,7 +93,7 @@ export default function Signin() {
               id="email"
               name="email"
               label="Email Address"
-              onChange={e => setUserName(e.target.value)}
+              onChange={e => setemail(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -112,6 +115,13 @@ export default function Signin() {
             >
               Sign In
             </Button>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <div style={{ display: 'flex' }}>
+                Dont have an Account ,<Link to="/register" style={{ textDecoration: "none" }}>
+                  <div>Signup</div>
+
+                </Link>
+              </div></div>
           </form>
         </div>
       </Grid>
